@@ -1,0 +1,11 @@
+<div class="election-page">
+   <h1>{{title}}</h1>
+   <div class="election-result">
+      {{#each results}}
+         <div class="bold">{{date}}</div>
+         <div class="italicize">{{description}}</div>
+         <div>{{type}} election</div>
+         <div>To learn more, visit <a href="{{website}}">the polling place website</a>.</div>
+      {{/each}}
+   </div>
+</div>
