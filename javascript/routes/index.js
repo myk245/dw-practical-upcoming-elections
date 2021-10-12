@@ -22,6 +22,11 @@ router.get('/', function(req, res, next) {
 
 /* POST search page */
 router.post('/search', function (req, res, next) {
+  // handle empty user input
+  if (req.body.city === '' || req.body.state === '') {
+    res.render('index', { title: 'Please enter a city and state to find an election near you:', states: postalAbbreviations })
+  }
+
   let searchUrl = setUrl(req.body.city, req.body.state);
 
   axios({
