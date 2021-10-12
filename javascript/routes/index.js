@@ -4,6 +4,17 @@ var postalAbbreviations = require('../us_state.js');
 const axios = require('axios');
 const dayjs = require('dayjs');
 
+// grab user input and append to url
+const setUrl = (city, state) => {
+  let cityName = city.toLowerCase().replace(/\s+/g, '_').trim();
+
+  let stateName = state.toLowerCase();
+
+  let url = `https://api.turbovote.org/elections/upcoming?district-divisions=ocd-division/country:us/state:${stateName},ocd-division/country:us/state:${stateName}/place:${cityName}`;
+
+  return url;
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Find My Election', states: postalAbbreviations });
@@ -11,16 +22,11 @@ router.get('/', function(req, res, next) {
 
 /* POST search page */
 router.post('/search', function (req, res, next) {
-  let cityName = req.body.city.toLowerCase().replace(/\s+/g, '_').trim();
-
-  let stateName = req.body.state.toLowerCase();
-
-  let url = `https://api.turbovote.org/elections/upcoming?district-divisions=ocd-division/country:us/state:${stateName},ocd-division/country:us/state:${stateName}/place:${cityName}`;
-  // let searchUrl = setUrl(req.body.city, req.body.state);
+  let searchUrl = setUrl(req.body.city, req.body.state);
 
   axios({
     method: 'get',
-    url,
+    url: searchUrl,
     headers: {
       "Accept": "application/json"
     }
