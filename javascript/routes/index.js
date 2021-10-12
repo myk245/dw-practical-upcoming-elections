@@ -26,6 +26,7 @@ router.post('/search', function (req, res, next) {
     }
   })
     .then(data => {
+      // if there are upcoming elections
       if (data.data.length > 0) {
         let results = data.data.map(result => {
           return {
@@ -36,29 +37,12 @@ router.post('/search', function (req, res, next) {
           }
         });
         res.render('results', {title: 'Upcoming Elections', results: results})
+      } else {
+        // if there are no upcoming elections
+        res.send('There are no upcoming elections for this area.')
       }
     })
-    // .then(data => res.render('results', { title: 'Upcoming Elections:', results: data}))
-    .catch(error => console.log(error))
+    .catch(error => res.send(error))
 });
 
-/* example response
-data: [
-    {
-      description: 'Noble Special Proposition Election',
-      date: '2021-10-12T00:00:00Z',
-      'district-divisions': [Array],
-      type: 'municipal',
-      source: [Object],
-      'polling-place-url': 'https://okvoterportal.okelections.us/',
-      'qa-status': 'complete',
-      id: '61377a1e-b3cf-4830-84a9-8c80195c3538',
-      population: 7053,
-      website: 'https://okvoterportal.okelections.us',
-      'polling-place-url-shortened': 'https://tvote.org/32uvpin'
-    }
-  ]
-
-
- */
 module.exports = router;
